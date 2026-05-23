@@ -34,6 +34,17 @@ numeric_questions = { #These questions prompt simple numeric answers. They will 
         min_val = 0,
         max_val = 24
     ),
+    "stress_rating": NumericQuestion(
+        prompt = "On a scale of 0-10, how would you rate your daily stress level?",
+        min_val = 0,
+        max_val = 10
+    ),
+    "excercise_minutes": NumericQuestion(
+        prompt = "How many minutes of exercise do you get per day? (Max 120 minutes - you may have more, but cap at 120)",
+        min_val = 0,
+        max_val = 120 #This is a cap to prevent unrealistic answers.
+    ),
+    
 }
 reverse_likert_questions = { #These questions are reversed to align higher scores with lower risk.
     "teacher_relationship": ReverseLikertQuestion(
