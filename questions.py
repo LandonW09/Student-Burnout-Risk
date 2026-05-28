@@ -12,27 +12,55 @@ class NumericQuestion(Question):
         if self.max_val is not None and answer > self.max_val:
             return False
         return True
+    def ask(self):
+        while True:
+            try:
+                answer = float(input(self.prompt + " ")) #input(self.prompt) + " " prints question and waits for answer. Float converts answer to number.
+                if self.validate(answer):
+                    return answer
+                else:
+                    print(f"Please enter a number between {self.min_val} and {self.max_val}.")
+            except ValueError: #This is if user enters something other than a number.
+                print("Please enter a valid number.")
 class LikertQuestion(Question):
     def __init__(self, prompt, scale=5):
         super().__init__(prompt)
-        self.scale = {
+        self.scale = { #The user will answer with a number 1 through 5. Labels show what each number means.
             1: "Strongly Disagree",
             2: "Disagree",
             3: "Neutral",
             4: "Agree",
             5: "Strongly Agree"
         }
-    def score_response(self, answer):
+    def score_response(self, answer): #This is a placeholder method meant to be overridden by ReverseLikertQuestion subclass.
         return answer
+    def ask(self):
+        while True:
+            print(self.prompt)
+            for num, label in self.scale.items(): #Prints each option in the Likert scale for each question.
+                print(f"{num}. {label}")
+            try:
+                answer = int(input("Enter your response (1-5): ")) 
+                if 1 <= answer <= 5: #Makes sure answer is between 1 and 5.
+                    return self.score_response(answer)
+                else:
+                    print("Please enter a number between 1 and 5.")
+            except ValueError:
+                print("Please enter a valid number.")
 class ReverseLikertQuestion(LikertQuestion):
     def score_response(self, answer):
         return 6 - answer #Reverses the score so that higher scores indicate lower risk.
 
 numeric_questions = { #These questions prompt simple numeric answers. They will later need thresholds and validation.
     "sleep_hours": NumericQuestion(
-        prompt = "How many hours of sleep do you get per night?",
+        prompt = "How many hours of sleep do you get per night? Try to estimate an answer between 0-12.",
         min_val = 0,
-        max_val = 24
+        max_val = 12
+    ),
+    "feeling_well_rested": NumericQuestion(
+        prompt = "How many days a week do you feel well-rested when you wake up?",
+        min_val = 0,
+        max_val = 7
     ),
     "stress_rating": NumericQuestion(
         prompt = "On a scale of 0-10, how would you rate your daily stress level?",
@@ -40,9 +68,24 @@ numeric_questions = { #These questions prompt simple numeric answers. They will 
         max_val = 10
     ),
     "excercise_minutes": NumericQuestion(
-        prompt = "How many minutes of exercise do you get per day? (Max 120 minutes - you may have more, but cap at 120)",
+        prompt = "How many minutes of exercise do you get per day? Try to estimate an answer between 0-120.",
         min_val = 0,
         max_val = 120 #This is a cap to prevent unrealistic answers.
+    ),
+    "missed_obligations": NumericQuestion(
+        prompt = "In the past week, how many times have you missed class or other obligations due to poor mental health? Try to estimate an answer 0-20.",
+        min_val = 0,
+        max_val = 20
+    ),
+    "days_since_break": NumericQuestion(
+        prompt = "How many days has it been since you had a full day without academic responsibilities (e.g., no classes, homework, studying, etc.)? Try to estimate an answer 0-30.",
+        min_val = 0,
+        max_val = 30 #Will do research for healthy range.
+    ),
+    "social_interactions": NumericQuestion(
+        prompt = "On average, how many days a week do you have meaningful social interactions with friends or family?",
+        min_val = 0,
+        max_val = 7
     ),
     
 }
