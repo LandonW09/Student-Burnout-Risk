@@ -1,6 +1,6 @@
 Student Burnout Risk
 
-A Python-based tool that asses the risk of academic burnout through the use of a structured survey. 
+A Python-based tool that assesses the risk of academic burnout through the use of a structured survey. 
 The calculator combines multiple question classes, each with specific scoring behavior to produce a meaningful score.
 
 Motivation
