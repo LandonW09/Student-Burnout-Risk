@@ -24,7 +24,7 @@ def score_reverse_likert(answers: dict) -> dict: #Reversal already handled in th
     scores["work_pride"] = answers["work_pride"]
     scores["challenge_seeking"] = answers["challenge_seeking"]
     return scores
-def score_likert(answers: dict) -> dict: #No reversal needed for these questions.
+def score_likert(answers: dict) -> dict: #No reversal needed for these questions.qq
     scores = {}
     scores["problem_avoidance"] = answers["problem_avoidance"]
     scores["critical_mindset"] = answers["critical_mindset"]
@@ -37,3 +37,20 @@ def score_likert(answers: dict) -> dict: #No reversal needed for these questions
     scores["pessimistic_outlook"] = answers["pessimistic_outlook"]
     scores["self_doubt"] = answers["self_doubt"]
     return scores
+
+def combine_scores(numeric_scores: dict, reverse_likert_scores: dict, likert_scores: dict) -> float:
+    """Adds all scores together and calculates an overall burnout risk percentage."""
+    total_score = sum(numeric_scores.values()) + sum(reverse_likert_scores.values()) + sum(likert_scores.values())
+    max_score = 321 #This is maximum score derived by adding the max value of each question.
+    return round((total_score / max_score) * 100, 1)
+
+def get_risk_level(overall_score: float) -> str:
+    """These are labels for the final print statement. It is based on the final percentage score."""
+    if overall_score < 30:
+        return "Low Risk"
+    elif overall_score < 50:
+        return "Moderate Risk"
+    elif overall_score < 70:
+        return "High Risk"
+    else:
+        return "Severe Risk"
