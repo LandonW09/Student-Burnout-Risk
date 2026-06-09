@@ -1,9 +1,9 @@
 def score_numeric(answers: dict) -> dict:
     scores = {}
-    scores["sleep_hours"] = 12 - answers["sleep_hours"] #Reverse logic.
+    scores["sleep_hours"] = 9 - answers["sleep_hours"] #Reverse logic.
     scores["feeling_well_rested"] = 7 - answers["feeling_well_rested"] #Reverse logic.
     scores["stress_rating"] = answers["stress_rating"] #No reversal needed.
-    scores["exercise_minutes"] = 120 - answers["exercise_minutes"] #Reverse logic.
+    scores["exercise_minutes"] = 400 - answers["exercise_minutes"] #Reverse logic.
     scores["missed_obligations"] = answers["missed_obligations"] #No reversal needed.
     scores["days_since_break"] = answers["days_since_break"] #No reversal needed.
     scores["social_interactions"] = 7 - answers["social_interactions"] #Reverse logic.
@@ -24,7 +24,7 @@ def score_reverse_likert(answers: dict) -> dict: #Reversal already handled in th
     scores["work_pride"] = answers["work_pride"]
     scores["challenge_seeking"] = answers["challenge_seeking"]
     return scores
-def score_likert(answers: dict) -> dict: #No reversal needed for these questions.qq
+def score_likert(answers: dict) -> dict: #No reversal needed for these questions.
     scores = {}
     scores["problem_avoidance"] = answers["problem_avoidance"]
     scores["critical_mindset"] = answers["critical_mindset"]
