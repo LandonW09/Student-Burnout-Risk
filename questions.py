@@ -1,6 +1,7 @@
 class Question:
     def __init__(self, prompt):
         self.prompt = prompt #All questions have this in common.
+
 class NumericQuestion(Question):
     def __init__(self, prompt, min_val=None, max_val=None): #min and max are defined within each key of the numeric dictionary.
         super().__init__(prompt) #This is in every subclass. It runs the __init__ method from the parent class to call prompt.
@@ -21,7 +22,8 @@ class NumericQuestion(Question):
                 else:
                     print(f"Please enter a number between {self.min_val} and {self.max_val}.")
             except ValueError: #This is if user enters something other than a number.
-                print("Please enter a valid number.")
+                print("Please enter a valid number within the given range.")
+
 class LikertQuestion(Question):
     def __init__(self, prompt, scale=5):
         super().__init__(prompt)
@@ -46,19 +48,20 @@ class LikertQuestion(Question):
                 else:
                     print("Please enter a number between 1 and 5.")
             except ValueError:
-                print("Please enter a valid number.")
+                print("Please enter a valid number within the given range.")
+
 class ReverseLikertQuestion(LikertQuestion):
     def score_response(self, answer):
         return 6 - answer #Reverses the score so that higher scores indicate lower risk.
 
 numeric_questions = { #These questions prompt simple numeric answers. They will later need thresholds and validation.
     "sleep_hours": NumericQuestion(
-        prompt = "How many hours of sleep do you get per night? Try to estimate an answer between 0-12.",
+        prompt = "How many hours of sleep do you get per night? Try to estimate an answer between 0-9.",
         min_val = 0,
-        max_val = 12
+        max_val = 9
     ),
     "feeling_well_rested": NumericQuestion(
-        prompt = "How many days a week do you feel well-rested when you wake up?",
+        prompt = "How many days a week do you feel well-rested when you wake up? Try to estimate an answer between 0-7.",
         min_val = 0,
         max_val = 7
     ),
@@ -67,27 +70,26 @@ numeric_questions = { #These questions prompt simple numeric answers. They will 
         min_val = 0,
         max_val = 10
     ),
-    "excercise_minutes": NumericQuestion(
-        prompt = "How many minutes of exercise do you get per day? Try to estimate an answer between 0-120.",
+    "exercise_minutes": NumericQuestion(
+        prompt = "How many minutes of exercise do you get per week? Try to estimate an answer between 0-300.",
         min_val = 0,
-        max_val = 120 #This is a cap to prevent unrealistic answers.
+        max_val = 300 #Many reccomendations suggest that 300 minutes per week is ideal.
     ),
     "missed_obligations": NumericQuestion(
         prompt = "In the past week, how many times have you missed class or other obligations due to poor mental health? Try to estimate an answer 0-20.",
         min_val = 0,
-        max_val = 20
+        max_val = 20 #There isn't an exact healthy range, but missing this many obligations is a likely sign of burnout.
     ),
     "days_since_break": NumericQuestion(
         prompt = "How many days has it been since you had a full day without academic responsibilities (e.g., no classes, homework, studying, etc.)? Try to estimate an answer 0-30.",
         min_val = 0,
-        max_val = 30 #Will do research for healthy range.
+        max_val = 30 #A healthy range is at least 1 day a week, so 30 is a reasonable max.
     ),
     "social_interactions": NumericQuestion(
-        prompt = "On average, how many days a week do you have meaningful social interactions with friends or family?",
+        prompt = "On average, how many days a week do you have meaningful social interactions with friends or family? Try to estimate an answer between 0-7.",
         min_val = 0,
         max_val = 7
-    ),
-    
+    ), 
 }
 reverse_likert_questions = { #These questions are reversed to align higher scores with lower risk.
     "teacher_relationship": ReverseLikertQuestion(
@@ -158,7 +160,7 @@ likert_questions = {
     "pessimistic_outlook": LikertQuestion(
         prompt = "I often have difficulties maintaining a positive outlook when I have a lot on my plate."
     ),
-    "self_soubt": LikertQuestion(
+    "self_doubt": LikertQuestion(
         prompt = "It's hard to believe that I can succeed when I have a lot of work to do."
     )
 }
