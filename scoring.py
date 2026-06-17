@@ -40,6 +40,7 @@ def score_likert(answers: dict) -> dict: #No reversal needed for these questions
 
 def combine_scores(numeric_scores: dict, reverse_likert_scores: dict, likert_scores: dict) -> float:
     """Adds all scores together and calculates an overall burnout risk percentage."""
+    #THIS NEEDS TO BE FIXED. CURRENTLY ALLOWS FOR FINAL PERCENTAGES OVER 100%.
     total_score = sum(numeric_scores.values()) + sum(reverse_likert_scores.values()) + sum(likert_scores.values())
     max_score = 321 #This is maximum score derived by adding the max value of each question.
     return round((total_score / max_score) * 100, 1)
