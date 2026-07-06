@@ -3,7 +3,7 @@ def score_numeric(answers: dict) -> dict:
     scores["sleep_hours"] = 9 - answers["sleep_hours"] #Reverse logic.
     scores["feeling_well_rested"] = 7 - answers["feeling_well_rested"] #Reverse logic.
     scores["stress_rating"] = answers["stress_rating"] #No reversal needed.
-    scores["exercise_minutes"] = 300 - answers["exercise_minutes"] #Reverse logic.
+    scores["exercise_minutes"] = round((300 - answers["exercise_minutes"]) / 300 * 10, 1) #Reverse logic.
     scores["missed_obligations"] = answers["missed_obligations"] #No reversal needed.
     scores["days_since_break"] = answers["days_since_break"] #No reversal needed.
     scores["social_interactions"] = 7 - answers["social_interactions"] #Reverse logic.
@@ -38,11 +38,16 @@ def score_likert(answers: dict) -> dict: #No reversal needed for these questions
     scores["self_doubt"] = answers["self_doubt"]
     return scores
 
-def combine_scores(numeric_scores: dict, reverse_likert_scores: dict, likert_scores: dict) -> float:
+#def combine_scores(numeric_scores: dict, reverse_likert_scores: dict, likert_scores: dict) -> float:
     """Adds all scores together and calculates an overall burnout risk percentage."""
     #THIS NEEDS TO BE FIXED. CURRENTLY ALLOWS FOR FINAL PERCENTAGES OVER 100%.
     total_score = sum(numeric_scores.values()) + sum(reverse_likert_scores.values()) + sum(likert_scores.values())
-    max_score = 321 #This is maximum score derived by adding the max value of each question.
+    max_score = 208 #This is maximum score derived by adding the max value of each question.
+    return round((total_score / max_score) * 100, 1)
+def combine_scores(numeric_scores: dict, reverse_likert_scores: dict, likert_scores: dict) -> float:
+    """Adds all scores together and calculates an overall burnout risk percentage."""
+    total_score = sum(numeric_scores.values()) + sum(reverse_likert_scores.values()) + sum(likert_scores.values())
+    max_score = 208
     return round((total_score / max_score) * 100, 1)
 
 def get_risk_level(overall_score: float) -> str:
