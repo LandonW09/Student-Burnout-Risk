@@ -22,7 +22,7 @@ class NumericQuestion(Question):
                 else:
                     print(f"Please enter a number between {self.min_val} and {self.max_val}.")
             except ValueError: #This is if user enters something other than a number.
-                print("Please enter a valid number within the given range.")
+                print("Please enter a numeric value within the given range.")
 
 class LikertQuestion(Question):
     def __init__(self, prompt, scale=5):
